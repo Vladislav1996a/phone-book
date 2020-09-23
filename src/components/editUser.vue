@@ -6,6 +6,8 @@
 			<input class="block__inp" type="text" placeholder="phone" v-model="phone">
 			<input class="block__inp" type="text" placeholder="email" v-model="email">
 		</div>
+		<p v-if='error' class="color_red">name and phone fields are required</p>
+
 		<button v-if="!item" class="btn__save" @click="addUser({name, surname, phone, email})">save</button>
 		<button v-if="item" class="btn__save" @click="edit({name, surname, phone, email, item})">edit</button>
 	
@@ -26,17 +28,24 @@ export default {
 			phone:'',
 			email:'',
 			item: this.$route.query.item,
-			jsonParese:''
+			jsonParese:'',
+			error: false
 		}
 	},
 	methods:{
 		addUser({name, surname, phone, email}){
-			this.$store.dispatch("addUser", {name, surname, phone, email})
-			{
-				this.name = ''
-				this.surname =''
-				this.phone =''
-				this.email =''
+			if(name.length >0 && phone.length >0){
+				this.$store.dispatch("addUser", {name, surname, phone, email}) 
+				{
+					this.name = ''
+					this.surname =''
+					this.phone =''
+					this.email =''
+				}
+				this.$router.push('/')
+			}
+			else{
+				this.error = true
 			}
 		},
 		editUser(){
@@ -48,7 +57,13 @@ export default {
 			}
 		},
 		edit({name, surname, phone, email, item}){
-			this.$store.dispatch("edit", {name, surname, phone, email, item})
+			if(name.length >0 && phone.length >0){
+				this.$store.dispatch("edit", {name, surname, phone, email, item})
+				this.$router.push('/')
+			}
+			else{
+				this.error = true
+			}
 		},
 		addUserParse(){
 			let userJson = JSON.parse(this.jsonParese)
@@ -101,5 +116,9 @@ export default {
 .btn__save:hover{
 	background: rgb(74, 160, 16);
 	color: rgb(241, 204, 204);
+}
+
+.color_red{
+	color: red;
 }
 </style>
