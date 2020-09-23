@@ -6,8 +6,8 @@
 			<input class="block__inp" type="text" placeholder="phone" v-model="phone">
 			<input class="block__inp" type="text" placeholder="email" v-model="email">
 		</div>
-		<button class="btn__save" @click="addUser({name, surname, phone, email})">save</button>
-		<button class="btn__save" @click="edit({name, surname, phone, email, item})">edit</button>
+		<button v-if="!item" class="btn__save" @click="addUser({name, surname, phone, email})">save</button>
+		<button v-if="item" class="btn__save" @click="edit({name, surname, phone, email, item})">edit</button>
 	
 		<div class="mt block__wrap">
 			<textarea v-model="jsonParese" placeholder="Import JSON" name="name" id="" cols="30" rows="10"></textarea>
